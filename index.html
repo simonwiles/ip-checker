@@ -1,28 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>IP Checker</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
-
   <main>
-    <input type="text" id="hostname" placeholder="Hostname">
-    <button id="check">Check</button>
+    <input type="text" id="hostname" placeholder="Hostname or URL..." />
+    <button type="button" id="check">Check</button>
     <pre id="result"></pre>
   </main>
 
   <script src="ip-checker.js"></script>
   <script>
-    const resultElem = document.getElementById("result")
+    const resultElem = document.getElementById("result");
     const doCheck = async (hostname) => {
+      resultElem.innerHTML = "";
+      if (!hostname) return;
       resultElem.innerHTML = "Checking...";
-      hostname = hostname.trim().replace(/(^https?:\/\/)|(\/$)/g, '').replace(/(\/[^/]+\/?)+$/, '');
+      hostname = hostname
+        .trim()
+        .replace(/(^https?:\/\/)|(\/$)/g, "")
+        .replace(/(\/[^/]+\/?)+$/, "");
       try {
         const ipV4 = await NSLookup(hostname);
         const result = UkrainianIP(ipV4);
@@ -32,10 +35,11 @@
       }
     };
     const hostnameInput = document.getElementById("hostname");
-    document.getElementById("check").addEventListener("click", (e) => doCheck(hostnameInput.value));
+    document
+      .getElementById("check")
+      .addEventListener("click", (e) => doCheck(hostnameInput.value));
     hostnameInput.addEventListener("blur", (e) => doCheck(e.target.value));
     hostnameInput.focus();
-
   </script>
 </body>
 
